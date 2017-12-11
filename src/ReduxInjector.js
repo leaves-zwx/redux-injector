@@ -14,8 +14,8 @@ export function combineReducersRecurse(reducers) {
   // If this is an object of functions, combine reducers.
   if (typeof reducers === 'object') {
     let combinedReducers = {};
-    for (let [key, value] of Object.entries(reducers)) {
-      combinedReducers[key] = combineReducersRecurse(value);
+    for (let key in reducers) {
+      combinedReducers[key] = combineReducersRecurse(reducers[key]);
     }
     return combine(combinedReducers);
   }
