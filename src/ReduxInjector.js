@@ -1,10 +1,11 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore as createReduxStore, combineReducers } from 'redux';
 import { set, has } from 'lodash';
 
 let store = {};
 let combine = combineReducers;
+let createStore = createReduxStore;
 
-function combineReducersRecurse(reducers) {
+export function combineReducersRecurse(reducers) {
   // If this is a leaf or already combined.
   if (typeof reducers === 'function') {
     return reducers;
@@ -33,6 +34,10 @@ export function createInjectStore(initialReducers, ...args) {
     // Allow overriding the combineReducers function such as with redux-immutable.
     if (overrides.hasOwnProperty('combineReducers') && typeof overrides.combineReducers === 'function') {
       combine = overrides.combineReducers;
+    }
+    // Allow overriding the combineReducers function such as with redux-injector
+    if (overrides.hasOwnProperty('createStore') && typeof overrides.createStore === 'function') {
+      createStore = overrides.createStore;
     }
   }
 
